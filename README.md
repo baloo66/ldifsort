@@ -11,11 +11,11 @@ Sort an LDIF file by the specified key attribute.
 
 ## SYNOPSIS
 
-`java -jar ldifsort.jar **-k** **keyattr** [**-andc**]`
+`java -jar ldifsort.jar -k keyattr [-andc]`
 
--k
+**-k**
+: Specifies the key attribute for making sort comparisons. If 'dn' is specified, sorting is done by the full DN string, which can be composed of different attributes for different entries.
 
-    Specifies the key attribute for making sort comparisons. If 'dn' is specified, sorting is done by the full DN string, which can be composed of different attributes for different entries.
 -a
 
     Specifies that attributes within a given entry should also be sorted. This has the side effect of removing all comments and line continuations in the LDIF file.
