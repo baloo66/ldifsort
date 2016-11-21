@@ -14,7 +14,7 @@ Sort an LDIF file by the specified key attribute. All comments in the LDIF input
 
 ## SYNOPSIS
 
-`java -jar ldifsort.jar [-k keyattr] [-andch] [-l locale] < infile.ldif > outfile.ldif`
+`java -jar ldifsort-<version>.jar [-k keyattr] [-andch] [-l locale] < infile.ldif > outfile.ldif`
 
 **-k** : Specifies the key attribute for making sort comparisons. If omitted, sorting is done by the dn, which can be composed of different attributes for different entries.
 
