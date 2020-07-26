@@ -17,8 +17,11 @@ public class LdifDNComparator implements Comparator<LdifValue> {
 			return 1;
 		}
 
-		String[] parts1 = value1.getUnprocessedValue().split(",");
-		String[] parts2 = value2.getUnprocessedValue().split(",");
+		String[] parts1 = value1.getUnprocessedValue().replace("\\,", "#").split(",");
+		String[] parts2 = value2.getUnprocessedValue().replace("\\,", "#").split(",");
+		
+		for (String dnpart : parts1) { dnpart = dnpart.replace("#", "\\,"); }
+		for (String dnpart : parts2) { dnpart = dnpart.replace("#", "\\,"); }
 
 		int len1 = parts1.length;
 		int len2 = parts2.length;
@@ -50,7 +53,7 @@ public class LdifDNComparator implements Comparator<LdifValue> {
 		if ((keyValue1 != null) && (keyValue2 == null)) { // second null is higher
 			return 1;
 		}
-		
+
 		// ok, there ARE two arguments - split em
 		String[] tokens = keyValue1.split("="); // split first key=value pair on = sign 
 		if (tokens.length != 2) { 

@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +21,7 @@ public class LdifReader {
 	private BufferedReader reader;
 	private int version = -1;
 	private static final String DN = "dn: ";
+	private static final String DN64 = "dn:: ";
 	private static final String VERSION = "version: ";
 	private static final int DEFAULT_VERSION = 1;
 	private List<LdifEntry> entries;
@@ -66,7 +68,7 @@ public class LdifReader {
 			while ((readedLine = reader.readLine()) != null) {
 				if (readedLine.length() == 0) {
 					if (dataLine != null) {
-						if (!(dataLine.startsWith(DN))) {
+						if ((!(dataLine.startsWith(DN))) && (!(dataLine.startsWith(DN64)))){
 							curEntry.addAttribute(new LdifAttrValue(dataLine.toString()));
 						}
 						this.entries.add(curEntry);
@@ -92,6 +94,9 @@ public class LdifReader {
 						if (dataLine != null) {
 							if (dataLine.startsWith(DN)) {
 								curEntry = new LdifEntry(dataLine);
+							} else if (dataLine.startsWith(DN64)) {
+								dataLine = DN + new String(Base64.getDecoder().decode(dataLine.substring(DN64.length()).trim()));
+								curEntry = new LdifEntry(dataLine);
 							} else {
 								curEntry.addAttribute(new LdifAttrValue(dataLine));
 							}
@@ -102,7 +107,7 @@ public class LdifReader {
 				}
 			}
 			if (dataLine != null) {
-				if (!(dataLine.startsWith(DN))) {
+				if ((!(dataLine.startsWith(DN))) && (!(dataLine.startsWith(DN64)))) {
 					curEntry.addAttribute(new LdifAttrValue(dataLine.toString()));
 				}
 				this.entries.add(curEntry);
